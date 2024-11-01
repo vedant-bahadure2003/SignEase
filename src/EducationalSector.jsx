@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Image from "./sign-images.jpg";
 import { Link } from "react-router-dom";
+import "./EducationalSector.css";
 
 const EducationalSector = () => {
   const navigate = useNavigate();
@@ -11,7 +12,17 @@ const EducationalSector = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-teal-400">
+    <div className="relative flex flex-col items-center justify-center min-h-screen">
+      {/* SVG Background */}
+      <div
+        className="absolute inset-0 bgbgbg"
+        style={{
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          zIndex: -1,
+        }}
+      ></div>
+
       {/* Back Button in the Leftmost Corner */}
       <button
         onClick={handleBack}
@@ -34,7 +45,8 @@ const EducationalSector = () => {
         Back
       </button>
 
-      <div className="flex flex-col justify-center items-center bg-white shadow-lg rounded-lg overflow-hidden max-w-xl h-[650px] w-full m-10">
+      {/* Main Content Container */}
+      <div className="flex flex-col justify-center items-center bg-gray-100 shadow-lg rounded-lg overflow-hidden max-w-xl w-full m-10 relative z-10">
         <img
           src={Image}
           className="h-[420px] w-full object-cover"
@@ -49,8 +61,8 @@ const EducationalSector = () => {
             importance in fostering growth and knowledge.
           </p>
           <Link to={"/hehe"}>
-            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
-              Learn More
+            <button className="mt-4 bg-purple-400 border border-black text-black py-2 px-4 rounded-lg hover:bg-purple-600 transition duration-300">
+              Practice Mode
             </button>
           </Link>
         </div>

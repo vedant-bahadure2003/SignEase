@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
 
@@ -7,29 +8,25 @@ function EducationalApp() {
   const [predictedWord, setPredictedWord] = useState("");
   const [expectedLetters, setExpectedLetters] = useState(
     [...Array(26)].map((_, i) => String.fromCharCode(65 + i))
-  ); // Letters A-Z
-  const [selectedLetter, setSelectedLetter] = useState(expectedLetters[0]); // Default to first letter A
+  );
+  const [selectedLetter, setSelectedLetter] = useState(expectedLetters[0]);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(null); // Feedback state (correct or incorrect)
-  const [feedbackVisible, setFeedbackVisible] = useState(false); // Toggle feedback visibility
-  const [isHandDetected, setIsHandDetected] = useState(false); // Hand detection state
+  const [isCorrect, setIsCorrect] = useState(null);
+  const [feedbackVisible, setFeedbackVisible] = useState(false);
+  const [isHandDetected, setIsHandDetected] = useState(false);
+  const navigate = useNavigate();
 
-  // Function to start camera stream
   const startCameraStream = async () => {
     try {
-      console.log("Attempting to access camera...");
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       videoRef.current.srcObject = stream;
-      console.log("Camera stream started successfully.");
     } catch (err) {
       console.error("Error accessing camera: ", err);
     }
   };
 
-  // Function to send frame to prediction API
   const sendFrame = async () => {
     if (isCameraOpen) {
-      console.log("Sending frame for prediction...");
       const canvas = document.createElement("canvas");
       canvas.width = 640;
       canvas.height = 480;
@@ -41,29 +38,17 @@ function EducationalApp() {
         const response = await axios.post("http://localhost:5000/predict", {
           image: imageData.split(",")[1],
         });
-        const predictedLabel = response.data.predicted_label; // Get predicted letter
-        console.log("Received prediction: ", predictedLabel);
+        const predictedLabel = response.data.predicted_label;
+        setPredictedWord(predictedLabel);
 
-        setPredictedWord(predictedLabel); // Set the predicted word/letter
-
-        // Check if prediction matches selected letter
         if (predictedLabel.toLowerCase() === selectedLetter.toLowerCase()) {
           setIsCorrect(true);
           setFeedbackVisible(true);
-          console.log(
-            `Prediction is correct! Predicted: ${predictedLabel}, Selected: ${selectedLetter}`
-          );
+        } else if (isHandDetected) {
+          setIsCorrect(false);
+          setFeedbackVisible(true);
         } else {
-          // Only show feedback if hand is detected
-          if (isHandDetected) {
-            setIsCorrect(false);
-            setFeedbackVisible(true);
-            console.log(
-              `Prediction is incorrect. Predicted: ${predictedLabel}, Selected: ${selectedLetter}`
-            );
-          } else {
-            setFeedbackVisible(false); // Hide feedback if no hand detected
-          }
+          setFeedbackVisible(false);
         }
       } catch (error) {
         console.error("Error fetching prediction: ", error);
@@ -71,98 +56,102 @@ function EducationalApp() {
     }
   };
 
-  // Function to detect hand (this is a placeholder)
   const detectHand = () => {
-    const handDetected = Math.random() < 0.5; // Simulate a 50% chance of hand being detected
+    const handDetected = Math.random() < 0.5; // Replace with actual hand detection logic if available
     setIsHandDetected(handDetected);
-    console.log("Hand detected: ", handDetected);
   };
 
   useEffect(() => {
     if (isCameraOpen) {
-      console.log("Camera is open, starting stream...");
-      startCameraStream(); // Start camera stream
+      startCameraStream();
       const interval = setInterval(() => {
         sendFrame();
-        detectHand(); // Check for hand detection every interval
-      }, 1000); // Send frame every second
-      return () => {
-        clearInterval(interval); // Cleanup interval
-        console.log("Camera stream stopped.");
-      };
+        detectHand();
+      }, 1000);
+      return () => clearInterval(interval);
     }
   }, [isCameraOpen]);
 
   const handleOpenCamera = () => {
-    console.log("Opening camera...");
     setIsCameraOpen(true);
   };
 
   const handleCloseCamera = () => {
-    console.log("Closing camera...");
     setIsCameraOpen(false);
-    setFeedbackVisible(false); // Hide feedback when camera closes
+    setFeedbackVisible(false);
   };
 
-  // Check prediction and feedback based on selected letter change
   useEffect(() => {
     if (predictedWord) {
-      console.log("Checking prediction for selected letter change...");
-      if (predictedWord.toLowerCase() === selectedLetter.toLowerCase()) {
+      if (
+        predictedWord.toLowerCase() === selectedLetter.toLowerCase() &&
+        isHandDetected
+      ) {
         setIsCorrect(true);
         setFeedbackVisible(true);
-        console.log(
-          `Updated Prediction is correct! Predicted: ${predictedWord}, Selected: ${selectedLetter}`
-        );
+      } else if (isHandDetected) {
+        setIsCorrect(false);
+        setFeedbackVisible(true);
       } else {
-        // Only show feedback if hand is detected
-        if (isHandDetected) {
-          setIsCorrect(false);
-          setFeedbackVisible(true);
-          console.log(
-            `Updated Prediction is incorrect. Predicted: ${predictedWord}, Selected: ${selectedLetter}`
-          );
-        } else {
-          setFeedbackVisible(false); // Hide feedback if no hand detected
-        }
+        setFeedbackVisible(false);
       }
     }
-  }, [predictedWord, selectedLetter, isHandDetected]); // Trigger this effect when either changes
+  }, [predictedWord, selectedLetter, isHandDetected]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-8">
-      <h1 className="text-4xl font-extrabold text-blue-600 mb-6 text-center">
+    <div className="min-h-screen bg-gradient-to-br from-purple-400 to-white flex flex-col items-center justify-center p-4 md:p-8 relative">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-purple-700 mb-6 text-center">
         Educational Prediction Feedback
       </h1>
 
-      {/* Conditional Camera Button */}
-      <div className="mb-6 flex justify-center">
+      {/* Back Button in the Leftmost Corner */}
+      <button
+        onClick={() => navigate(-1)}
+        className="absolute top-4 left-4 flex items-center bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out"
+      >
+        <svg
+          className="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 19l-7-7 7-7"
+          ></path>
+        </svg>
+        Back
+      </button>
+
+      {/* Camera Button */}
+      <div className="mb-6">
         {!isCameraOpen ? (
           <button
             onClick={handleOpenCamera}
-            className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-full hover:bg-blue-700 transition duration-300 ease-in-out shadow-lg transform hover:scale-105"
+            className="bg-purple-600 text-white font-semibold py-3 px-6 rounded-full hover:bg-purple-700 transition duration-300 ease-in-out shadow-md transform hover:scale-105"
           >
             Open Camera
           </button>
         ) : (
           <button
             onClick={handleCloseCamera}
-            className="bg-red-600 text-white font-semibold py-3 px-6 rounded-full hover:bg-red-700 transition duration-300 ease-in-out shadow-lg transform hover:scale-105"
+            className="bg-red-600 text-white font-semibold py-3 px-6 rounded-full hover:bg-red-700 transition duration-300 ease-in-out shadow-md transform hover:scale-105"
           >
             Close Camera
           </button>
         )}
       </div>
 
-      {/* Video Stream Placeholder */}
+      {/* Video Stream */}
       {isCameraOpen && (
-        <div className="mb-4 flex justify-center border-4 border-gray-700 rounded-lg shadow-lg overflow-hidden">
+        <div className="mb-4  flex justify-center border-4 border-purple-300 rounded-lg shadow-lg overflow-hidden">
           <video
             ref={videoRef}
-            width="640"
-            height="480"
+            className="w-full md:w-3/4 lg:w-1/2 rounded-lg"
             autoPlay
-            className="rounded-lg border-4 border-gray-300 shadow-inner"
             style={{ transform: "scaleX(-1)" }}
           />
         </div>
@@ -170,9 +159,9 @@ function EducationalApp() {
 
       {/* Display Predicted Word */}
       <div className="text-center mb-4">
-        <h2 className="text-3xl font-semibold text-gray-800">
+        <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
           Predicted Letter:{" "}
-          <span className="text-purple-600">{predictedWord}</span>
+          <span className="text-purple-600 font-bold">{predictedWord}</span>
         </h2>
       </div>
 
@@ -181,11 +170,8 @@ function EducationalApp() {
         <label className="text-lg text-gray-700 mr-2">Select Letter:</label>
         <select
           value={selectedLetter}
-          onChange={(e) => {
-            setSelectedLetter(e.target.value);
-            console.log("Selected letter changed to: ", e.target.value); // Debugging line
-          }}
-          className="border-2 border-gray-400 rounded-lg p-2 text-lg w-48 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onChange={(e) => setSelectedLetter(e.target.value)}
+          className="border-2 border-purple-400 rounded-lg p-2 text-lg w-48 focus:outline-none focus:ring-2 focus:ring-purple-500"
         >
           {expectedLetters.map((letter) => (
             <option key={letter} value={letter}>
@@ -195,7 +181,7 @@ function EducationalApp() {
         </select>
       </div>
 
-      {/* Feedback: Correct or Incorrect */}
+      {/* Feedback */}
       {feedbackVisible && (
         <div className="mt-4 text-center">
           {isCorrect ? (
@@ -204,15 +190,10 @@ function EducationalApp() {
               <span className="text-2xl font-bold">Correct!</span>
             </div>
           ) : (
-            // Show incorrect feedback only if hand is detected
-            isHandDetected && (
-              <div className="flex items-center justify-center space-x-2 text-red-600">
-                <span className="text-3xl">❌</span>
-                <span className="text-2xl font-bold">
-                  Incorrect. Try again!
-                </span>
-              </div>
-            )
+            <div className="flex items-center justify-center space-x-2 text-red-600">
+              <span className="text-3xl">❌</span>
+              <span className="text-2xl font-bold">Incorrect. Try again!</span>
+            </div>
           )}
         </div>
       )}

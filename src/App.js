@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
 import Image from "./background.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
+import { faBook } from "@fortawesome/free-solid-svg-icons";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faMusic } from "@fortawesome/free-solid-svg-icons";
+import { faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const videoRef = useRef(null);
@@ -146,8 +153,9 @@ function App() {
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-white text-3xl font-mono font-bold">SignEase</h1>
           <Link to={"/edu"}>
-            <h2 className="text-white text-lg font-semibold hover:text-black">
-              Educational Section
+            <h2 className="text-white text-lg font-semibold hover:text-black flex items-center space-x-2">
+              <FontAwesomeIcon icon={faBook} className="text-white" />
+              <span>Educational Section</span>
             </h2>
           </Link>
         </div>
@@ -189,28 +197,30 @@ function App() {
             {!isCameraOpen ? (
               <button
                 onClick={handleOpenCamera}
-                className="bg-blue-500 text-white font-semibold py-3 px-8 rounded-full hover:bg-blue-600 transition duration-300 ease-in-out mb-6 shadow-lg transform hover:scale-105"
+                className="bg-purple-700 text-white font-semibold py-3 px-8 rounded-full hover:bg-purple-800 transition duration-300 ease-in-out mb-6 shadow-lg transform hover:scale-105 flex items-center space-x-2"
               >
-                Tap to Open Camera
+                <FontAwesomeIcon icon={faCamera} className="text-white" />
+                <span>Tap to Open Camera</span>
               </button>
             ) : (
               <button
                 onClick={handleCloseCamera}
-                className="bg-red-500 text-white font-semibold py-3 px-8 rounded-full hover:bg-red-600 transition duration-300 ease-in-out mb-6 shadow-lg transform hover:scale-105"
+                className="bg-red-500 text-white font-semibold py-3 px-8 rounded-full hover:bg-red-600 transition duration-300 ease-in-out mb-6 shadow-lg transform hover:scale-105 flex items-center space-x-2"
               >
-                Tap to Close Camera
+                <FontAwesomeIcon icon={faCamera} className="text-white" />
+                <span>Tap to close Camera</span>
               </button>
             )}
 
             <div className="relative border-4 border-gray-700 rounded-2xl mb-4">
               <video
                 ref={videoRef}
-                width="640"
-                height="480"
+                width="360" // Reduced width
+                height="270" // Reduced height
                 autoPlay
                 className={`rounded-lg border-4 border-gray-300 ${
                   !isCameraOpen ? "hidden" : ""
-                }`}
+                } w-full h-auto md:w-72 md:h-56`} // Added responsive classes
                 style={{ transform: "scaleX(-1)" }}
               />
             </div>
@@ -229,15 +239,17 @@ function App() {
             <div className="flex justify-center space-x-5 mt-4">
               <button
                 onClick={handleDeleteLetter}
-                className="bg-gray-200 border-2 border-purple-900 text-black py-2 px-6 rounded-lg hover:bg-white transition ease-in-out duration-300"
+                className="bg-gray-200 border-2 border-purple-900 text-black py-2 px-6 rounded-lg hover:bg-white transition ease-in-out duration-300 flex items-center space-x-2"
               >
-                Delete Last Letter
+                <FontAwesomeIcon icon={faTrash} className="text-purple-900" />
+                <span>Delete Last Letter</span>
               </button>
               <button
                 onClick={handleSpeakAloud}
-                className="bg-purple-800 border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-purple-900 transition ease-in-out duration-300"
+                className="bg-purple-800 border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-purple-900 transition ease-in-out duration-300 flex items-center space-x-2"
               >
-                Speak Aloud
+                <FontAwesomeIcon icon={faVolumeUp} className="text-white" />
+                <span>Speak Aloud</span>
               </button>
             </div>
           </div>
@@ -247,9 +259,10 @@ function App() {
             <div className="w-64">
               <label
                 htmlFor="volume"
-                className="block mb-2 text-lg font-semibold text-gray-700"
+                className="block mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
               >
-                Volume
+                <FontAwesomeIcon icon={faVolumeUp} className="text-gray-700" />
+                <span>Volume</span>
               </label>
               <input
                 type="range"
@@ -269,9 +282,10 @@ function App() {
             <div className="w-64">
               <label
                 htmlFor="pitch"
-                className="block mb-2 text-lg font-semibold text-gray-700"
+                className="block mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
               >
-                Pitch
+                <FontAwesomeIcon icon={faMusic} className="text-gray-700" />
+                <span>Pitch</span>
               </label>
               <input
                 type="range"
@@ -291,9 +305,13 @@ function App() {
             <div className="w-64">
               <label
                 htmlFor="rate"
-                className="block mb-2 text-lg font-semibold text-gray-700"
+                className="block mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
               >
-                Speed
+                <FontAwesomeIcon
+                  icon={faTachometerAlt}
+                  className="text-gray-700"
+                />
+                <span>Speed</span>
               </label>
               <input
                 type="range"
