@@ -104,7 +104,7 @@ function EducationalApp() {
         Educational Prediction Feedback
       </h1>
 
-      {/* Back Button in the Leftmost Corner */}
+      
       <button
         onClick={() => navigate(-1)}
         className="absolute top-4 left-4 flex items-center bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out"
@@ -126,7 +126,7 @@ function EducationalApp() {
         Back
       </button>
 
-      {/* Camera Button */}
+ 
       <div className="mb-6">
         {!isCameraOpen ? (
           <button
@@ -145,7 +145,7 @@ function EducationalApp() {
         )}
       </div>
 
-      {/* Video Stream */}
+      
       {isCameraOpen && (
         <div className="mb-4  flex justify-center border-4 border-purple-300 rounded-lg shadow-lg overflow-hidden">
           <video
@@ -157,7 +157,7 @@ function EducationalApp() {
         </div>
       )}
 
-      {/* Display Predicted Word */}
+
       <div className="text-center mb-4">
         <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
           Predicted Letter:{" "}
@@ -165,7 +165,7 @@ function EducationalApp() {
         </h2>
       </div>
 
-      {/* Letter Selection Dropdown */}
+     
       <div className="mb-4">
         <label className="text-lg text-gray-700 mr-2">Select Letter:</label>
         <select
@@ -181,7 +181,7 @@ function EducationalApp() {
         </select>
       </div>
 
-      {/* Feedback */}
+    
       {feedbackVisible && (
         <div className="mt-4 text-center">
           {isCorrect ? (

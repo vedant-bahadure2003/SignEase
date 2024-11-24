@@ -21,7 +21,7 @@ function App() {
   const [volume, setVolume] = useState(1);
   const [pitch, setPitch] = useState(1);
   const [rate, setRate] = useState(1);
-  const [isCameraOpen, setIsCameraOpen] = useState(false); // New state to track if the camera is open
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
 
   useEffect(() => {
     let stream;
@@ -46,9 +46,9 @@ function App() {
         const stream = videoRef.current.srcObject;
         const tracks = stream.getTracks();
 
-        tracks.forEach((track) => track.stop()); // Stop each track of the stream
-        videoRef.current.srcObject = null; // Remove the stream
-        setIsStreaming(false); // Update streaming state
+        tracks.forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+        setIsStreaming(false);
       }
     };
 
@@ -138,11 +138,11 @@ function App() {
   };
 
   const handleOpenCamera = () => {
-    setIsCameraOpen(true); // Set camera as open
+    setIsCameraOpen(true);
   };
 
   const handleCloseCamera = () => {
-    setIsCameraOpen(false); // Set camera as closed
+    setIsCameraOpen(false);
     const videoElement = videoRef.current;
     videoElement.classList.add("hidden");
   };
@@ -168,7 +168,6 @@ function App() {
         }}
       >
         <div className="grid grid-cols-12 gap-8">
-          {/* Left side - Instructions */}
           <div className="col-span-3 space-y-6 h-[450px] bg-gray-100 p-4  rounded-lg bg-opacity-30 backdrop-blur-sm">
             <h2 className="text-2xl font-semibold text-gray-800">
               Instructions
@@ -191,9 +190,7 @@ function App() {
             </p>
           </div>
 
-          {/* Middle - Camera and Controls */}
           <div className="col-span-6 flex flex-col items-center">
-            {/* Conditional Button for Open/Close Camera */}
             {!isCameraOpen ? (
               <button
                 onClick={handleOpenCamera}
@@ -215,12 +212,12 @@ function App() {
             <div className="relative border-4 border-gray-700 rounded-2xl mb-4">
               <video
                 ref={videoRef}
-                width="360" // Reduced width
-                height="270" // Reduced height
+                width="360"
+                height="270"
                 autoPlay
                 className={`rounded-lg border-4 border-gray-300 ${
                   !isCameraOpen ? "hidden" : ""
-                } w-full h-auto md:w-72 md:h-56`} // Added responsive classes
+                } w-full h-auto md:w-72 md:h-56`}
                 style={{ transform: "scaleX(-1)" }}
               />
             </div>
@@ -254,7 +251,6 @@ function App() {
             </div>
           </div>
 
-          {/* Right side - Volume, Pitch, Speed Controls */}
           <div className="col-span-3 flex flex-col items-center space-y-8 p-6 h-[450px] bg-gray-100 shadow-xl rounded-xl bg-opacity-30 backdrop-blur-sm">
             <div className="w-64">
               <label

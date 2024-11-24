@@ -8,12 +8,11 @@ const EducationalSector = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate(-1); // Go back to the previous page
+    navigate(-1);
   };
 
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen">
-      {/* SVG Background */}
       <div
         className="absolute inset-0 bgbgbg"
         style={{
@@ -23,7 +22,6 @@ const EducationalSector = () => {
         }}
       ></div>
 
-      {/* Back Button in the Leftmost Corner */}
       <button
         onClick={handleBack}
         className="absolute top-4 left-4 flex items-center bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition duration-300 ease-in-out"
@@ -45,7 +43,6 @@ const EducationalSector = () => {
         Back
       </button>
 
-      {/* Main Content Container */}
       <div className="flex flex-col justify-center items-center bg-gray-100 shadow-lg rounded-lg overflow-hidden max-w-xl w-full m-10 relative z-10">
         <img
           src={Image}
