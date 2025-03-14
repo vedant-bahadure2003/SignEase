@@ -21,7 +21,7 @@ function App() {
   const [volume, setVolume] = useState(1);
   const [pitch, setPitch] = useState(1);
   const [rate, setRate] = useState(1);
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false); // New state to track if the camera is open
 
   useEffect(() => {
     let stream;
@@ -48,7 +48,7 @@ function App() {
 
         tracks.forEach((track) => track.stop());
         videoRef.current.srcObject = null;
-        setIsStreaming(false);
+        setIsStreaming(false); // Update streaming state
       }
     };
 
@@ -149,48 +149,53 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-300 via-emerald-50 to-purple-300">
+      {/* navbar */}
       <nav className="bg-purple-900 border-b border-gray-600 p-4 shadow-2xl">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-white text-3xl font-mono font-bold">SignEase</h1>
-          <Link to={"/edu"}>
-            <h2 className="text-white text-lg font-semibold hover:text-black flex items-center space-x-2">
-              <FontAwesomeIcon icon={faBook} className="text-white" />
-              <span>Educational Section</span>
-            </h2>
-          </Link>
+          <div className="hidden md:flex md:items-center md:space-x-4">
+            <Link to={"/edu"}>
+              <h2 className="text-white text-lg font-semibold hover:text-black flex items-center space-x-2">
+                <FontAwesomeIcon icon={faBook} className="text-white" />
+                <span>Educational Section</span>
+              </h2>
+            </Link>
+          </div>
         </div>
       </nav>
 
       <div
-        className="container mx-auto mt-10 p-8 bg-white shadow-xl rounded-2xl bg-cover bg-center"
+        className="container mx-auto mt-10 p-6 sm:p-8 bg-white shadow-xl rounded-2xl bg-cover bg-center"
         style={{
           backgroundImage: `url(${Image})`,
         }}
       >
-        <div className="grid grid-cols-12 gap-8">
-          <div className="col-span-3 space-y-6 h-[450px] bg-gray-100 p-4  rounded-lg bg-opacity-30 backdrop-blur-sm">
-            <h2 className="text-2xl font-semibold text-gray-800">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-8">
+          {/* instruction */}
+          <div className="col-span-1 sm:col-span-3 space-y-6 h-auto sm:h-[450px] bg-gray-100 p-4 rounded-lg bg-opacity-30 backdrop-blur-sm">
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
               Instructions
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-semibold text-sm md:text-base">
               1. <b>Webcam Setup:</b> Place webcam at eye level, center hands.
             </p>
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-semibold text-sm md:text-base">
               2. <b>Hand Positioning:</b> Keep hands visible, clear movements.
             </p>
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-semibold text-sm md:text-base">
               3. <b>Lighting:</b> Use bright, even light. Avoid shadows or
               backlighting.
             </p>
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-semibold text-sm md:text-base">
               4. <b>Background:</b> Plain, contrasting background.
             </p>
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-semibold text-sm md:text-base">
               5. <b>Avoid Obstructions:</b> Clear hands from objects or jewelry.
             </p>
           </div>
 
-          <div className="col-span-6 flex flex-col items-center">
+          {/* camera section */}
+          <div className="col-span-1 sm:col-span-6 flex flex-col items-center">
             {!isCameraOpen ? (
               <button
                 onClick={handleOpenCamera}
@@ -212,12 +217,10 @@ function App() {
             <div className="relative border-4 border-gray-700 rounded-2xl mb-4">
               <video
                 ref={videoRef}
-                width="360"
-                height="270"
                 autoPlay
                 className={`rounded-lg border-4 border-gray-300 ${
                   !isCameraOpen ? "hidden" : ""
-                } w-full h-auto md:w-72 md:h-56`}
+                } w-full h-auto sm:w-72 sm:h-56`}
                 style={{ transform: "scaleX(-1)" }}
               />
             </div>
@@ -233,7 +236,7 @@ function App() {
               </h3>
             </div>
 
-            <div className="flex justify-center space-x-5 mt-4">
+            <div className="flex flex-col sm:flex-row justify-center space-x-5 mt-4">
               <button
                 onClick={handleDeleteLetter}
                 className="bg-gray-200 border-2 border-purple-900 text-black py-2 px-6 rounded-lg hover:bg-white transition ease-in-out duration-300 flex items-center space-x-2"
@@ -251,11 +254,12 @@ function App() {
             </div>
           </div>
 
-          <div className="col-span-3 flex flex-col items-center space-y-8 p-6 h-[450px] bg-gray-100 shadow-xl rounded-xl bg-opacity-30 backdrop-blur-sm">
-            <div className="w-64">
+          {/* volume, pitch, speed section */}
+          <div className="col-span-1 sm:col-span-3 flex flex-col items-center space-y-8 p-6 h-auto sm:h-[450px] bg-gray-100 shadow-xl rounded-xl bg-opacity-30 backdrop-blur-sm">
+            <div className="w-full sm:w-64">
               <label
                 htmlFor="volume"
-                className="block mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
+                className="mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
               >
                 <FontAwesomeIcon icon={faVolumeUp} className="text-gray-700" />
                 <span>Volume</span>
@@ -275,10 +279,10 @@ function App() {
               </div>
             </div>
 
-            <div className="w-64">
+            <div className="w-full sm:w-64">
               <label
                 htmlFor="pitch"
-                className="block mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
+                className="mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
               >
                 <FontAwesomeIcon icon={faMusic} className="text-gray-700" />
                 <span>Pitch</span>
@@ -298,10 +302,10 @@ function App() {
               </div>
             </div>
 
-            <div className="w-64">
+            <div className="w-full sm:w-64">
               <label
                 htmlFor="rate"
-                className="block mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
+                className="mb-2 text-lg font-semibold text-gray-700 flex items-center space-x-2"
               >
                 <FontAwesomeIcon
                   icon={faTachometerAlt}
@@ -322,6 +326,43 @@ function App() {
               <div className="text-center mt-2 text-sm font-medium text-purple-600">
                 {rate}
               </div>
+            </div>
+
+            <div
+              className="absolute bottom-[3%] left-1/2 transform -translate-x-1/2 bg-gray-200 shadow-xl rounded-xl bg-opacity-30 backdrop-blur-sm"
+              style={{ zIndex: 10 }}
+            >
+              <label
+                htmlFor="language"
+                className="block text-lg font-semibold text-gray-800 mb-2"
+              >
+                Select Language:
+              </label>
+              <select
+                id="language"
+                className="w-full px-4 py-2 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600"
+                onChange={(e) =>
+                  console.log("Language selected:", e.target.value)
+                }
+              >
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="zh">Chinese</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="hi">Hindi</option>
+                <option value="ar">Arabic</option>
+                <option value="ru">Russian</option>
+                <option value="pt">Portuguese</option>
+                <option value="it">Italian</option>
+                <option value="nl">Dutch</option>
+                <option value="sv">Swedish</option>
+                <option value="tr">Turkish</option>
+                <option value="mr">Marathi</option>
+                <option value="tl">Telgu</option>
+              </select>
             </div>
           </div>
         </div>
