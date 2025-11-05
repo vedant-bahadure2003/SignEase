@@ -18,7 +18,7 @@ A modern, real-time sign language detection web application that translates Amer
 
 ## 🚀 Live Demo
 
-[View Live Demo](https://your-demo-link.com) <!-- Replace with your actual demo link -->
+[View Live Demo]() <!-- Replace with your actual demo link -->
 
 ## 📱 Screenshots
 
