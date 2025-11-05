@@ -108,7 +108,7 @@
 @media (max-width: 1024px) {
   .grid-container {
     gap: 1.5rem;
-    max-width: 95%;
+    max-width: 100%;
     padding: 0.75rem;
   }
 
@@ -128,13 +128,14 @@
   }
 
   .main-container {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0;
   }
 
   .grid-container {
     gap: 1rem;
-    padding: 0.5rem;
-    max-width: 98%;
+    padding: 0;
+    max-width: 100%;
+    margin: 0;
   }
 
   .main-content-row {
@@ -149,13 +150,14 @@
   }
 
   .main-container {
-    padding: 0.5rem 0.25rem;
+    padding: 0.5rem 0;
   }
 
   .grid-container {
     gap: 0.75rem;
-    padding: 0.25rem;
+    padding: 0;
     max-width: 100%;
+    margin: 0;
   }
 
   .main-content-row {
@@ -176,6 +178,25 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
+}
+
+/* Ensure full width on mobile for all sections */
+@media (max-width: 768px) {
+  .instructions-section,
+  .camera-section,
+  .control-panel {
+    width: 100%;
+    margin: 0;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .instructions-section,
+  .camera-section,
+  .control-panel {
+    padding: 0 0.5rem;
+  }
 }
 
 /* Smooth scrolling */
