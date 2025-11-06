@@ -81,7 +81,7 @@ function EducationalApp() {
 
         try {
           const response = await axios.post(
-            "http://localhost:5000/predict",
+            " https://signease-backend-1.onrender.com/predict",
             {
               image: imageData.split(",")[1],
             },

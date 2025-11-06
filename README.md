@@ -92,7 +92,7 @@ src/
 
    ```javascript
    export const API_CONFIG = {
-     BASE_URL: "http://localhost:5000", // Update with your API URL
+     BASE_URL: " https://signease-backend-1.onrender.com", // Update with your API URL
      ENDPOINTS: {
        PREDICT: "/predict",
      },
@@ -108,7 +108,7 @@ src/
 
 5. **Open your browser**
 
-   Navigate to `http://localhost:3000`
+   Navigate to ` https://signease-backend-1.onrender.com`
 
 ### Building for Production
 

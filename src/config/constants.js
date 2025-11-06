@@ -1,6 +1,6 @@
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: "http://localhost:5000",
+  BASE_URL: " https://signease-backend-1.onrender.com",
   ENDPOINTS: {
     PREDICT: "/predict",
   },
